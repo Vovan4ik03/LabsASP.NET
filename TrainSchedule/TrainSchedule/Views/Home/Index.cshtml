@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2 class="mb-4 text-center">Розклад поїздів</h2>
+
+<table class="table table-striped table-hover shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Назва</th>
+            <th>Тип</th>
+            <th>Номер</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model.Trains)
+        {
+            <tr>
+                <td>@p.TrainName</td>
+                <td>@p.TrainType</td>
+                <td>@p.TrainNumber</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="d-flex justify-content-center mt-4">
+    <nav>
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.PaginInfo.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PaginInfo.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
