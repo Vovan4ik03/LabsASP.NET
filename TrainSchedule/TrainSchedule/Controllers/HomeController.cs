@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System.Linq;
 using TrainSchedule.Models;
 using TrainSchedule.Models.ViewsModels;
 
@@ -16,23 +18,32 @@ namespace TrainSchedule.Controllers
             _repository = repo;
         }
 
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(string type, int page = 1)
         {
-            var trains = _repository.Trains
-             .OrderBy(t => t.Id)
-             .Skip((page - 1) * PageSize)
-             .Take(PageSize)
-             .ToList();
+            
+            var filtered = _repository.Trains
+                .AsEnumerable()
+    .            Where(t => string.IsNullOrEmpty(type)
+                    || t.TrainType.ToLower() == type.ToLower())
+                 .OrderBy(t => t.Id);
 
-            var model = new TrainListViewModel
+            var totalItems = filtered.Count();
+
+            var model = new TrainsListViewModel
             {
-                Trains = trains,
+                Trains = filtered
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList(),
+
                 PaginInfo = new PaginInfo
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = _repository.Trains.Count()
-                }
+                    TotalItems = totalItems
+                },
+
+                CurrentType = type 
             };
 
             return View(model);

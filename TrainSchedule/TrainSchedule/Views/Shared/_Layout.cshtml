@@ -30,6 +30,24 @@
             </div>
         </nav>
     </header>
+
+    @{
+        var selectedFromQuery = Context.Request.Query["type"].ToString();
+        var selectedType = string.IsNullOrEmpty(selectedFromQuery) ? null : selectedFromQuery;
+    }
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                @await Component.InvokeAsync("NavigationMenu", new { selectedType = selectedType })
+            </div>
+
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

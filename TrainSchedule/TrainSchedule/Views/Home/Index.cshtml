@@ -15,15 +15,10 @@
     <tbody>
         @foreach (var p in Model.Trains)
         {
-            <tr>
-                <td>@p.TrainName</td>
-                <td>@p.TrainType</td>
-                <td>@p.TrainNumber</td>
-            </tr>
+            <partial name="TrainSummary" model="p" />
         }
     </tbody>
 </table>
-
 
 <div class="d-flex justify-content-center mt-4">
     <nav>
@@ -31,7 +26,13 @@
             @for (int i = 1; i <= Model.PaginInfo.TotalPages; i++)
             {
                 <li class="page-item @(i == Model.PaginInfo.CurrentPage ? "active" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-controller="Home"
+                       asp-route-type="@Model.CurrentType"
+                       asp-route-page="@i">
+                        @i
+                    </a>
                 </li>
             }
         </ul>
