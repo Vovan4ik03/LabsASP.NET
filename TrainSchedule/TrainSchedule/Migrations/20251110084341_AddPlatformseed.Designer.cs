@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainSchedule.Models;
 
@@ -10,9 +11,11 @@ using TrainSchedule.Models;
 namespace TrainSchedule.Migrations
 {
     [DbContext(typeof(TrainScheduleDbContext))]
-    partial class TrainScheduleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251110084341_AddPlatformseed")]
+    partial class AddPlatformseed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,7 @@ namespace TrainSchedule.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Platforms");
+                    b.ToTable("Platform");
                 });
 
             modelBuilder.Entity("TrainSchedule.Models.Trains", b =>

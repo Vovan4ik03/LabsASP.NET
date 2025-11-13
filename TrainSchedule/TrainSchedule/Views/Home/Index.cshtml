@@ -1,40 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model TrainSchedule.Models.ViewsModels.TrainsListViewModel
+@{
+    ViewData["Title"] = "Список поїздів";
 }
 
-<h2 class="mb-4 text-center">Розклад поїздів</h2>
+<div class="container mt-4">
+    <h2>Список поїздів</h2>
 
-<table class="table table-striped table-hover shadow-sm">
-    <thead class="table-dark">
-        <tr>
-            <th>Назва</th>
-            <th>Тип</th>
-            <th>Номер</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var p in Model.Trains)
-        {
-            <partial name="TrainSummary" model="p" />
-        }
-    </tbody>
-</table>
+    <div class="mb-3">
+        <a class="btn btn-primary" asp-action="Create">Додати поїзд</a>
+    </div>
 
-<div class="d-flex justify-content-center mt-4">
-    <nav>
-        <ul class="pagination">
-            @for (int i = 1; i <= Model.PaginInfo.TotalPages; i++)
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Назва</th>
+                <th>Номер</th>
+                <th>Тип</th>
+                <th>Платформа</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var train in Model.Trains)
             {
-                <li class="page-item @(i == Model.PaginInfo.CurrentPage ? "active" : "")">
-                    <a class="page-link"
-                       asp-action="Index"
-                       asp-controller="Home"
-                       asp-route-type="@Model.CurrentType"
-                       asp-route-page="@i">
-                        @i
-                    </a>
-                </li>
+                <tr>
+                    <td>@train.TrainName</td>
+                    <td>@train.TrainNumber</td>
+                    <td>@train.TrainType</td>
+                    <td>@train.Platform?.PlatformNumber</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@train.Id">Деталі</a>
+                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@train.Id">Редагувати</a>
+                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@train.Id">Видалити</a>
+                    </td>
+                </tr>
             }
-        </ul>
-    </nav>
+        </tbody>
+    </table>
 </div>

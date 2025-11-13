@@ -6,5 +6,6 @@ namespace TrainSchedule.Models
     {
             public TrainScheduleDbContext(DbContextOptions<TrainScheduleDbContext> options) : base(options) { }
             public DbSet<Trains> Trains => Set<Trains>();
+            public DbSet<Platform> Platforms => Set<Platform>();
     }
 }

@@ -10,22 +10,22 @@ namespace TrainSchedule.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ITrainRepository _repository;
+        private readonly TrainScheduleDbContext _context;
         public int PageSize = 5;
 
-        public HomeController(ITrainRepository repo)
+        public HomeController(TrainScheduleDbContext context)
         {
-            _repository = repo;
+            _context = context;
         }
 
         public IActionResult Index(string type, int page = 1)
         {
-            
-            var filtered = _repository.Trains
+            var filtered = _context.Trains
+                .Include(t => t.Platform) 
                 .AsEnumerable()
-    .            Where(t => string.IsNullOrEmpty(type)
-                    || t.TrainType.ToLower() == type.ToLower())
-                 .OrderBy(t => t.Id);
+                .Where(t => string.IsNullOrEmpty(type)
+                            || t.TrainType.ToLower() == type.ToLower())
+                .OrderBy(t => t.Id);
 
             var totalItems = filtered.Count();
 
@@ -43,22 +43,97 @@ namespace TrainSchedule.Controllers
                     TotalItems = totalItems
                 },
 
-                CurrentType = type 
+                CurrentType = type
             };
 
             return View(model);
         }
 
-        public IActionResult Privacy()
+        
+        public IActionResult Details(int id)
         {
+            var train = _context.Trains
+                .Include(t => t.Platform)
+                .FirstOrDefault(t => t.Id == id);
+
+            if (train == null)
+                return NotFound();
+
+            return View(train); 
+        }
+
+      
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewBag.Platforms = _context.Platforms.ToList(); 
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Trains train)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (ModelState.IsValid)
+            {
+                _context.Trains.Add(train);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Platforms = _context.Platforms.ToList();
+            return View(train);
         }
 
+        
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var train = _context.Trains.Find(id);
+            if (train == null) return NotFound();
+
+            ViewBag.Platforms = _context.Platforms.ToList();
+            return View(train);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Trains train)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Trains.Update(train);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Platforms = _context.Platforms.ToList();
+            return View(train);
+        }
+
+        
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var train = _context.Trains
+                .Include(t => t.Platform)
+                .FirstOrDefault(t => t.Id == id);
+
+            if (train == null) return NotFound();
+            return View(train); 
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var train = _context.Trains.Find(id);
+            if (train != null)
+            {
+                _context.Trains.Remove(train);
+                _context.SaveChanges();
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
