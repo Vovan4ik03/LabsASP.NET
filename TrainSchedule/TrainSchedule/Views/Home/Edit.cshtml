@@ -1,0 +1,45 @@
+﻿@model TrainSchedule.Models.Trains
+@{
+    ViewData["Title"] = "Редагувати поїзд";
+}
+
+<div class="container mt-4">
+    <h2>Редагувати поїзд</h2>
+
+    <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="TrainName" class="form-label"></label>
+            <input asp-for="TrainName" class="form-control" />
+            <span asp-validation-for="TrainName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TrainNumber" class="form-label"></label>
+            <input asp-for="TrainNumber" class="form-control" />
+            <span asp-validation-for="TrainNumber" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TrainType" class="form-label"></label>
+            <input asp-for="TrainType" class="form-control" />
+            <span asp-validation-for="TrainType" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PlatformId" class="form-label">Платформа</label>
+            <select asp-for="PlatformId" class="form-select" asp-items="@(new SelectList(ViewBag.Platforms, "Id", "PlatformNumber"))">
+                <option value="">-- Оберіть платформу --</option>
+            </select>
+            <span asp-validation-for="PlatformId" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Зберегти</button>
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

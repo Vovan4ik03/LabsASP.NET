@@ -1,0 +1,48 @@
+﻿@model TrainSchedule.Models.ViewsModels.LoginModel
+@{
+    ViewData["Title"] = "Вхід";
+}
+
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="card shadow-lg border-0" style="width: 420px; border-radius: 16px;">
+        <div class="card-header text-white"
+             style="background: linear-gradient(90deg, #1e3a8a, #3b82f6); border-radius: 16px 16px 0 0;">
+            <h4 class="text-center my-2">Вхід до системи</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold">Email або логін</label>
+                    <input asp-for="Name" class="form-control shadow-sm" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label fw-semibold">Пароль</label>
+                    <input asp-for="Password" type="password" class="form-control shadow-sm" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" asp-for="ReturnUrl" />
+
+                <button type="submit" class="btn w-100 text-white"
+                        style="background: linear-gradient(90deg, #2563eb, #3b82f6); border-radius: 10px;">
+                    Увійти
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a asp-action="Register" class="text-primary fw-semibold">Створити акаунт</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

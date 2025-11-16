@@ -1,0 +1,26 @@
+﻿@model TrainSchedule.Models.Trains
+@{
+    ViewData["Title"] = "Видалити поїзд";
+}
+
+<div class="container mt-4">
+    <h2>Видалити поїзд</h2>
+
+    <div class="alert alert-danger">
+        Ви впевнені, що хочете видалити цей поїзд?
+    </div>
+
+    <table class="table table-bordered">
+        <tr><th>ID</th><td>@Model.Id</td></tr>
+        <tr><th>Назва</th><td>@Model.TrainName</td></tr>
+        <tr><th>Номер</th><td>@Model.TrainNumber</td></tr>
+        <tr><th>Тип</th><td>@Model.TrainType</td></tr>
+        <tr><th>Номер платформи</th><td>@Model.Platform?.PlatformNumber</td></tr>
+    </table>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Видалити</button>
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>

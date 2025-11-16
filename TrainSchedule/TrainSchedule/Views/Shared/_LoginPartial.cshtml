@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link text-white fw-semibold" asp-controller="Account" asp-action="Profile">
+            Профіль
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link text-warning fw-semibold" asp-controller="Account" asp-action="Logout">
+            Вийти
+        </a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-white fw-semibold" asp-controller="Account" asp-action="Login">Вхід</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link text-white fw-semibold" asp-controller="Account" asp-action="Register">Реєстрація</a>
+    </li>
+}

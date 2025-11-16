@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TrainSchedule.Models.Platform>
+
+
+<div class="container mt-4">
+
+    <h2>Список Платформ</h2>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="mb-3">
+            <a class="btn btn-primary" asp-action="Create">Додати Платформу</a>
+        </div>
+    }
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Номер платформи</th>
+                <th>Станція</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var platform in Model)
+            {
+                <tr>
+                    <td>@platform.PlatformNumber</td>
+                    <td>@platform.StationName</td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                             <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@platform.Id">Деталі</a>
+                             <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@platform.Id">Редагувати</a>
+                             <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@platform.Id">Видалити</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

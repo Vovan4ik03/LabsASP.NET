@@ -1,0 +1,31 @@
+@model TrainSchedule.Models.Platform
+@{
+    ViewData["Title"] = "Редагувати платформу";
+}
+
+<div class="container mt-4">
+    <h2>Редагувати поїзд</h2>
+
+    <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="PlatformNumber" class="form-label"></label>
+            <input asp-for="PlatformNumber" class="form-control" />
+            <span asp-validation-for="PlatformNumber" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="StationName" class="form-label"></label>
+            <input asp-for="StationName" class="form-control" />
+            <span asp-validation-for="StationName" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Зберегти</button>
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,45 @@
+﻿@model TrainSchedule.Models.ViewsModels.TrainsListViewModel
+@{
+    ViewData["Title"] = "Список поїздів";
+}
+
+<div class="container mt-4">
+    <h2>Список поїздів</h2>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="mb-3">
+            <a class="btn btn-primary" asp-action="Create">Додати поїзд</a>
+        </div>
+    }
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Назва</th>
+                <th>Номер</th>
+                <th>Тип</th>
+                <th>Платформа</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var train in Model.Trains)
+            {
+                <tr>
+                    <td>@train.TrainName</td>
+                    <td>@train.TrainNumber</td>
+                    <td>@train.TrainType</td>
+                    <td>@train.Platform?.PlatformNumber</td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@train.Id">Деталі</a>
+                            <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@train.Id">Редагувати</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@train.Id">Видалити</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
